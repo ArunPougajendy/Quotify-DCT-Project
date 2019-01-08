@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Quotify</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <style>
+                #root {
+                    background-color: lightgrey;
+                    /* width: 300px; */
+                    padding: 15px;
+                    margin: 35px;
+                }
+                </style>
+    </head>
+    <body>
+        <div class="container">
+        <h1 id="h1" class="text-center">  Quotify </h1><br>
+		<p>
+        <a href="" >Random Quote (API)	</a>	|
+        <a href="qouteLocal.html" class="badge badge-primary">Random Quote (Local)</a>	|
+        <a href="new-quote.html" class="badge badge-primary">Add Quote</a>	|
+        <a href="list-all_1.html" class="badge badge-primary">List All Quote (Local)</a>	|
+		</p>
+        <div id="root" class="text-center" >
+
+        </div>
+        <button id="quoteBtn" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off"> Get Quote </button>
+        <button id="saveBtn" class="btn btn-info" >Save</button> 
+        </div>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"> </script>
+        <script>
+		
+            let url = "https://talaikis.com/api/quotes/random/";
+			let buttonHandler = document.getElementById('quoteBtn');
+            let rootHandler = document.getElementById('root');
+            let saveHandler = document.getElementById('saveBtn');
+            saveHandler.disabled = true;
+            let quotes =[];
+            let output;
+            //var myStorage = window.localStorage;
+			output = getQuote();
+            buttonHandler.addEventListener('click',()=>{
+                saveHandler.disabled = false;
+				output = getQuote();
+            },false);
+				saveHandler.addEventListener('click',()=>{
+					if(localStorage.quotes) {
+						saveHandler.disabled = true;
+						quotes = JSON.parse(localStorage.quotes);
+						quotes.push(output);
+                    //localStorage["quotes"] = JSON.stringify(quotes);
+						window.localStorage.setItem("quotes",JSON.stringify(quotes));
+					//localStorage.quotes += JSON.stringify(output);
+					//localStorage.setItem("quotes",JSON.stringify(output));
+					/*console.log(JSON.stringify(output));
+					function store(output){
+						return localStorage.quotes += JSON.stringify(output);
+					}*/
+					} else {
+						saveHandler.disabled = true;
+						quotes.push(output);
+                    //localStorage["quotes"] = JSON.stringify(quotes);
+						window.localStorage.setItem("quotes",JSON.stringify(quotes));
+					}
+                    
+                },false);
+			
+                function getQuote() {
+					axios.get(url).then((response)=>{
+					output = response.data;
+					output.quote = `${output.quote}`;
+					output.author = `${output.author}`;
+					console.log(output);
+					rootHandler.innerHTML=`<h2> "${output.quote}" </h2> \n <h4> ~${output.author} </h4>`;
+					saveHandler.disabled = false;
+					return output;
+				}).catch((err)=>{
+					console.log(err);
+				});
+				
+				}
+                
+      
+			
+			
+		
+        </script>
+    </body>
+</html>

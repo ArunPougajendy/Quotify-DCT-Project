@@ -1,0 +1,90 @@
+<<!DOCTYPE html>
+<html>
+    <head>
+        <title>Quotify</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	
+        <style>
+               /* #root {
+                    background-color: lightgrey;
+                    /* width: 300px; */
+                    padding: 15px;
+                    margin: 35px;
+                }
+				#textArea {
+					background-color: lightgrey;
+                    /* width: 300px; */
+                    padding: 15px;
+                    margin: 35px;
+				}*/
+                </style>
+    </head>
+    <body>
+        <div class="container">
+        <h1 id="h1" class="text-center">  Quotify </h1><br>
+		<p>
+        <a href="index.html" class="badge badge-primary">Random Quote (API)	</a>	|
+        <a href="qouteLocal.html" class="badge badge-primary" >Random Quote (Local)</a>	|
+        <a href="" >Add Quote</a>	|
+        <a href="list-all_1.html" class="badge badge-primary">List All Quote (Local)</a>	|
+		</p>
+        <div id="root" class="text-center" >
+			<form id="newQuote">
+				<div class="form-group">
+					<label for="quoteText"></label>
+					<textarea class="form-control" id="quoteText" rows="3" placeholder="Enter Your Quote"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="AuthorText"></label>
+					<textarea class="form-control" id="AuthorText" rows="1" placeholder="Enter Author Name"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="CategoryText"></label>
+					<textarea class="form-control" id="CategoryText" rows="1" placeholder="Enter Category Type"></textarea>
+				</div>
+				<input type="submit" class="btn btn-primary btn-lg btn-block" value="Save"> 
+			</form>
+        </div>
+        
+        </div>
+
+        <script>
+			formHandler = document.getElementById('newQuote');
+			quoteHandler = document.getElementById('quoteText');
+			authorHandler = document.getElementById('AuthorText');
+			categoryHandler = document.getElementById('CategoryText');
+			var quotes =[];
+			formHandler.addEventListener('submit',function(e){
+				e.preventDefault();
+				if ( (quoteHandler.value) && (authorHandler.value) && (categoryHandler.value) ) {
+				let data = {
+					quote: quoteHandler.value,
+					author: authorHandler.value,
+					cat: categoryHandler.value
+					}
+					data.quote = `${data.quote}`;
+					data.author = `${data.author}`;
+					formHandler.reset();
+					if(localStorage.quotes) {
+					quotes = JSON.parse(localStorage.quotes);
+					quotes.push(data);
+					localStorage["quotes"] = JSON.stringify(quotes);
+					localStorage.setItem("quotes",JSON.stringify(quotes));
+					} else {
+						quotes.push(data);
+						localStorage.setItem("quotes",JSON.stringify(quotes));
+					}
+					
+					} else {
+					console.log('no vlaues');
+					alert('Enter All fields');
+				}
+				
+			},false);
+		
+        </script>
+    </body>
+</html>
